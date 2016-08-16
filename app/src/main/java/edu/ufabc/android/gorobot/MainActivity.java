@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -159,9 +157,14 @@ public class MainActivity extends AppCompatActivity {
             else if(dataString.equals("---S"))
                 statusMessage.setText("Conectado");
             else {
-
                 textSpace.setText(new String(data));
             }
         }
     };
+
+    public void openMap(View view){
+        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+        startActivity(intent);
+    }
+
 }
