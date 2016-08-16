@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     public static int ENABLE_BLUETOOTH = 1;
     public static int SELECT_PAIRED_DEVICE = 2;
     public static int SELECT_DISCOVERED_DEVICE = 3;
-
+    private static final String TAG="MAIN_ACTIVITY";
     static TextView statusMessage;
     static TextView textSpace;
     ConnectionThread connect;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
                 statusMessage.setText("Bluetooth já ativado");
             }
         }
+
+
     }
 
 
@@ -167,4 +170,42 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onStart(){
+        super.onStart();
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            Double latitude = extras.getDouble("LATITUDE");
+            Double longitude = extras.getDouble("LONGITUDE");
+            EditText messageBox = (EditText) findViewById(R.id.editText_MessageBox);
+            EditText messageBox2 = (EditText) findViewById(R.id.editText_MessageBox2);
+            messageBox.setText(latitude.toString());
+            messageBox2.setText(longitude.toString());
+        }
+        Log.d(TAG, "onStart");
+    }
+
+    public void onResume(){
+        super.onResume();
+        Log.d(TAG, "OnResume");
+    }
+
+    public void onPause(){
+        super.onPause();
+        Log.d(TAG, "OnPause");
+    }
+
+    public void onStop(){
+        super.onStop();
+        Log.d(TAG, "OnStop");
+    }
+
+    public void onRestart(){
+        super.onRestart();
+        Log.d(TAG, "OnRestart");
+    }
+
+    public void onDestroy(){
+        super.onDestroy();
+        Log.d(TAG, "OnDestroy");
+    }
 }
