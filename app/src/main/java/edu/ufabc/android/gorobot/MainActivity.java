@@ -1,25 +1,46 @@
 package edu.ufabc.android.gorobot;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static int ENABLE_BLUETOOTH = 1;
-    public static int SELECT_PAIRED_DEVICE = 2;
-    public static int SELECT_DISCOVERED_DEVICE = 3;
-    private static final String TAG="MAIN_ACTIVITY";
-    static TextView statusMessage;
-    static TextView textSpace;
-    ConnectionThread connect;
+    private static int ENABLE_BLUETOOTH = 1;
+    private static int SELECT_PAIRED_DEVICE = 2;
+    private static int SELECT_DISCOVERED_DEVICE = 3;
+    private static final String MyPREFERENCES = "MyPrefs" ;
+    private static final String LAT = "latKey";
+    private static final String LNG = "lngKey";
+    private static final String TAG = "MAIN_ACTIVITY";
+    private static TextView statusMessage;
+    private static TextView textSpace;
+    private ConnectionThread connect;
+
+    public static Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle bundle = msg.getData();
+            byte[] data = bundle.getByteArray("data");
+            String dataString= new String(data);
+
+            if(dataString.equals("---N"))
+                statusMessage.setText("Ocorreu um erro durante a conexão");
+            else if(dataString.equals("---S"))
+                statusMessage.setText("Conectado");
+            else {
+                textSpace.setText(new String(data));
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +53,15 @@ public class MainActivity extends AppCompatActivity {
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
         if (btAdapter == null) {
             statusMessage.setText("Não foi encontrado Hardware Bluetooth ou não é funcional");
-        } else {
-            statusMessage.setText("Harware Bluetooth funcional");
+        }
+        else {
+            statusMessage.setText("Hardware Bluetooth funcional");
             if(!btAdapter.isEnabled()) {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, ENABLE_BLUETOOTH);
                 statusMessage.setText("Solicitando ativação do Bluetooth...");
-            } else {
+            }
+            else {
                 statusMessage.setText("Bluetooth já ativado");
             }
         }
@@ -121,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
         String messageBoxString2 = messageBox2.getText().toString();
         final byte[] data2 =  messageBoxString2.getBytes();
 
+        saveInSharedPreferences(messageBoxString, messageBoxString2);
         connect.write(data);
 
         //delay to make enough time to Arduino receive the strings
@@ -133,6 +157,18 @@ public class MainActivity extends AppCompatActivity {
         }, 2000);
     }
 
+    public void saveInSharedPreferences(String lat, String lng){
+        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor sharedPrefsEditor = sharedpreferences.edit();
+        int inputCount = sharedpreferences.getInt("inputCount", 0);
+
+        sharedPrefsEditor.putString(LAT+inputCount, lat);
+        sharedPrefsEditor.putString(LNG+inputCount, lng);
+        inputCount++;
+        sharedPrefsEditor.putInt("inputCount", inputCount);
+        sharedPrefsEditor.commit();
+    }
+
     //reset command to stop the robot
     public void reset(View view){
         String resetCommand = "r";
@@ -140,25 +176,13 @@ public class MainActivity extends AppCompatActivity {
         connect.write(data);
     }
 
-    public static Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            Bundle bundle = msg.getData();
-            byte[] data = bundle.getByteArray("data");
-            String dataString= new String(data);
-
-            if(dataString.equals("---N"))
-                statusMessage.setText("Ocorreu um erro durante a conexão");
-            else if(dataString.equals("---S"))
-                statusMessage.setText("Conectado");
-            else {
-                textSpace.setText(new String(data));
-            }
-        }
-    };
-
     public void openMap(View view){
         Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+        startActivity(intent);
+    }
+
+    public void openListOfLastLocations(View view){
+        Intent intent = new Intent(MainActivity.this, ListActivity.class);
         startActivity(intent);
     }
 
@@ -173,7 +197,6 @@ public class MainActivity extends AppCompatActivity {
             messageBox.setText(latitude.toString());
             messageBox2.setText(longitude.toString());
         }
-        Log.d(TAG, "onStart");
     }
 
 }

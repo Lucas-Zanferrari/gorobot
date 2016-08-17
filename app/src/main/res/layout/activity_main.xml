@@ -27,8 +27,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="20dp"
-            android:onClick="searchPairedDevices"
-    />
+            android:onClick="searchPairedDevices" />
 
     <Button
             android:layout_width="150dp"
@@ -54,13 +53,13 @@
             android:text="Abrir mapa"
             android:onClick="openMap"
             android:id="@+id/button_Map" android:layout_alignParentEnd="true"
-            android:layout_below="@id/button_DiscoveredDevices"/>
+            android:layout_below="@id/button_DiscoveredDevices" />
 
     <Button
             android:layout_width="150dp"
             android:layout_height="80dp"
             android:text="Últimos locais"
-            android:onClick="openMap"
+            android:onClick="openListOfLastLocations"
             android:id="@+id/button_Locations" android:layout_alignParentEnd="true"
             android:layout_below="@id/button_Map" />
 
@@ -86,7 +85,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:layout_above="@+id/editText_MessageBox"
-            android:layout_alignEnd="@+id/button_Locations"/>
+            android:layout_alignEnd="@+id/button_Locations" />
 
     <EditText
             android:layout_width="wrap_content"
@@ -96,7 +95,7 @@
             android:hint="Latitude"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="36dp"
-            android:layout_alignEnd="@+id/reset"/>
+            android:layout_alignEnd="@+id/reset" />
 
     <EditText
             android:layout_width="wrap_content"
@@ -114,16 +113,16 @@
             android:id="@+id/reset"
             android:onClick="reset"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"/>
+            android:layout_alignParentStart="true" />
 
     <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="150dp"
             android:layout_height="80dp"
-            android:text="Enviar coordenadas"
+            android:text="Enviar robô"
             android:id="@+id/button_Send"
             android:onClick="sendMessage"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
