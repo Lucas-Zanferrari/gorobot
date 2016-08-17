@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
                 statusMessage.setText("Bluetooth já ativado");
             }
         }
-
-
     }
 
 
@@ -71,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if(requestCode == ENABLE_BLUETOOTH) {
             if(resultCode == RESULT_OK) {
                 statusMessage.setText("Bluetooth ativado");
@@ -95,19 +92,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void searchPairedDevices(View view) {
-
         Intent searchPairedDevicesIntent = new Intent(this, PairedDevices.class);
         startActivityForResult(searchPairedDevicesIntent, SELECT_PAIRED_DEVICE);
     }
 
     public void discoverDevices(View view) {
-
         Intent searchPairedDevicesIntent = new Intent(this, DiscoveredDevices.class);
         startActivityForResult(searchPairedDevicesIntent, SELECT_DISCOVERED_DEVICE);
     }
 
     public void enableVisibility(View view) {
-
         Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 30);
         startActivity(discoverableIntent);
@@ -120,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
     public void sendMessage(View view) {
-
         EditText messageBox = (EditText) findViewById(R.id.editText_MessageBox);
         String messageBoxString = messageBox.getText().toString();
         byte[] data =  messageBoxString.getBytes();
@@ -138,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }, 2000);
-
     }
+
     //reset command to stop the robot
     public void reset(View view){
         String resetCommand = "r";
@@ -150,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
     public static Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-
             Bundle bundle = msg.getData();
             byte[] data = bundle.getByteArray("data");
             String dataString= new String(data);

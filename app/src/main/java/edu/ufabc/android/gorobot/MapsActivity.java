@@ -18,11 +18,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private LatLng currentLatLng;
+    private int inputCount = 0;
     public static final String MyPREFERENCES = "MyPrefs" ;
     public static final String Latitude = "latKey";
     public static final String Longitude = "lngKey";
     SharedPreferences sharedpreferences;
-    int inputCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
 
     /**
      * Manipulates the map once available.
@@ -92,8 +91,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         intent.putExtra("LATITUDE", currentLatLng.latitude);
         intent.putExtra("LONGITUDE", currentLatLng.longitude);
 
-        inputCount = sharedpreferences.getInt("inputCount", 0);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        inputCount = sharedpreferences.getInt("inputCount", 0);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putFloat(Latitude+inputCount, (float) currentLatLng.latitude);
         editor.putFloat(Longitude+inputCount, (float) currentLatLng.longitude);
