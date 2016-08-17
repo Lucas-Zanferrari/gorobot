@@ -9,8 +9,7 @@
               android:name="com.google.android.gms.maps.SupportMapFragment"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              tools:context=".MapsActivity"
-              tools:layout="@layout/abc_list_menu_item_radio" />
+              tools:context=".MapsActivity" />
 
     <Button
             android:layout_width="wrap_content"

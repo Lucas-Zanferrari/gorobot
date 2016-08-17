@@ -19,8 +19,8 @@
             android:layout_marginTop="31dp" />
 
     <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="80dp"
             android:text="Dispositivos pareados"
             android:id="@+id/button_PairedDevices"
             android:layout_below="@+id/statusMessage"
@@ -28,27 +28,42 @@
             android:layout_alignParentStart="true"
             android:layout_marginTop="20dp"
             android:onClick="searchPairedDevices"
-            android:layout_toStartOf="@+id/statusMessage" />
+    />
 
     <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="80dp"
             android:text="Descoberta de dispositivos"
             android:id="@+id/button_DiscoveredDevices"
-
             android:onClick="discoverDevices"
             android:layout_above="@+id/button_Visibility"
-            android:layout_alignParentEnd="true" android:layout_toEndOf="@+id/statusMessage"/>
+            android:layout_alignParentEnd="true" />
 
     <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="80dp"
             android:text="Habilitar Visibilidade"
             android:id="@+id/button_Visibility"
             android:onClick="enableVisibility"
-
             android:layout_below="@+id/button_PairedDevices"
-            android:layout_alignParentStart="true" android:layout_toStartOf="@+id/statusMessage"/>
+            android:layout_alignParentStart="true" />
+
+    <Button
+            android:layout_width="150dp"
+            android:layout_height="80dp"
+            android:text="Abrir mapa"
+            android:onClick="openMap"
+            android:id="@+id/button_Map" android:layout_alignParentEnd="true"
+            android:layout_below="@id/button_DiscoveredDevices"/>
+
+    <Button
+            android:layout_width="150dp"
+            android:layout_height="80dp"
+            android:text="Últimos locais"
+            android:onClick="openMap"
+            android:id="@+id/button_Locations" android:layout_alignParentEnd="true"
+            android:layout_below="@id/button_Map" />
+
 
     <!--<Button-->
     <!--android:layout_width="wrap_content"-->
@@ -61,61 +76,54 @@
     <!--android:layout_toStartOf="@+id/button_Visibility"-->
     <!--android:layout_alignEnd="@+id/button_PairedDevices" />-->
 
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Serial"
+            android:id="@+id/textSpace"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/button_Locations"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_above="@+id/editText_MessageBox"
+            android:layout_alignEnd="@+id/button_Locations"/>
 
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/editText_MessageBox"
             android:layout_above="@+id/reset"
+            android:hint="Latitude"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="36dp"
-            android:layout_toStartOf="@+id/button_DiscoveredDevices" />
+            android:layout_alignEnd="@+id/reset"/>
 
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/editText_MessageBox2"
+            android:hint="Longitude"
             android:layout_alignTop="@+id/editText_MessageBox"
             android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/statusMessage" />
+            android:layout_alignStart="@id/button_Locations" />
 
     <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Send"
-            android:id="@+id/button_Send"
-            android:onClick="sendMessage"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/reset"
-            android:layout_toEndOf="@+id/reset" />
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Serial"
-            android:id="@+id/textSpace"
-            android:layout_above="@+id/editText_MessageBox"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true" android:layout_below="@+id/button_Visibility"/>
-
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Reset"
+            android:layout_width="150dp"
+            android:layout_height="80dp"
+            android:text="Recomeçar do zero"
             android:id="@+id/reset"
             android:onClick="reset"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/statusMessage" />
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Abrir mapa"
-            android:onClick="openMap"
-            android:id="@+id/button_Map" android:layout_alignParentEnd="true" android:layout_above="@+id/textSpace"
-            android:layout_alignStart="@+id/button_DiscoveredDevices"/>
+            android:layout_alignParentStart="true"/>
 
+    <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="150dp"
+            android:layout_height="80dp"
+            android:text="Enviar coordenadas"
+            android:id="@+id/button_Send"
+            android:onClick="sendMessage"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

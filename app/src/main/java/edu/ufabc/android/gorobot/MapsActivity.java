@@ -1,6 +1,8 @@
 package edu.ufabc.android.gorobot;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +18,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private LatLng currentLatLng;
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String Latitude = "latKey";
+    public static final String Longitude = "lngKey";
+    SharedPreferences sharedpreferences;
+    int inputCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in ufabc and move the camera
         LatLng ufabc = new LatLng(-23.643718, -46.527315);
         changeMarker(ufabc);
+
         // Zoom in, animating the camera.
         mMap.animateCamera(CameraUpdateFactory.zoomTo(13), 2000, null);
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
@@ -83,6 +91,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("LATITUDE", currentLatLng.latitude);
         intent.putExtra("LONGITUDE", currentLatLng.longitude);
+
+        inputCount = sharedpreferences.getInt("inputCount", 0);
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putFloat(Latitude+inputCount, (float) currentLatLng.latitude);
+        editor.putFloat(Longitude+inputCount, (float) currentLatLng.longitude);
+        inputCount++;
+        editor.putInt("inputCount", inputCount);
+        editor.commit();
+
         startActivity(intent);
         MapsActivity.this.finish();
     }

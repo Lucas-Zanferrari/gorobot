@@ -184,28 +184,4 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onStart");
     }
 
-    public void onResume(){
-        super.onResume();
-        Log.d(TAG, "OnResume");
-    }
-
-    public void onPause(){
-        super.onPause();
-        Log.d(TAG, "OnPause");
-    }
-
-    public void onStop(){
-        super.onStop();
-        Log.d(TAG, "OnStop");
-    }
-
-    public void onRestart(){
-        super.onRestart();
-        Log.d(TAG, "OnRestart");
-    }
-
-    public void onDestroy(){
-        super.onDestroy();
-        Log.d(TAG, "OnDestroy");
-    }
 }
