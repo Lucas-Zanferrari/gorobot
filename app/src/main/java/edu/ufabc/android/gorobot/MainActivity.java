@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -65,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
                 statusMessage.setText("Bluetooth já ativado");
             }
         }
+
+        Log.d(TAG,"OnCreate");
+
     }
 
 
@@ -124,11 +128,11 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(searchPairedDevicesIntent, SELECT_DISCOVERED_DEVICE);
     }
 
-    public void enableVisibility(View view) {
-        Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 30);
-        startActivity(discoverableIntent);
-    }
+//    public void enableVisibility(View view) {
+//        Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+//        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 30);
+//        startActivity(discoverableIntent);
+//    }
 
 //    public void waitConnection(View view) {
 //
@@ -197,6 +201,34 @@ public class MainActivity extends AppCompatActivity {
             messageBox.setText(latitude.toString());
             messageBox2.setText(longitude.toString());
         }
+        Log.d(TAG, "OnStart");
     }
+
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "OnResume");
+    }
+
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "OnPause");
+    }
+
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "OnStop");
+    }
+
+    public void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "OnRestart");
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "OnDestroy");
+    }
+
+
 
 }

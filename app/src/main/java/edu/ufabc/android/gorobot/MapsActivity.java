@@ -102,7 +102,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             //saveInSharedPreferences(String.valueOf(currentLatLng.latitude), String.valueOf(currentLatLng.longitude));
 
-            startActivity(intent);
+            //startActivity(intent);
             MapsActivity.this.finish();
         }
         else {

@@ -61,8 +61,8 @@ public class ListActivity extends AppCompatActivity {
     }
 
     public void openBluetoothConf(View view){
-        Intent intent = new Intent(ListActivity.this, MainActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(ListActivity.this, MainActivity.class);
+        //startActivity(intent);
         ListActivity.this.finish();
     }
 
