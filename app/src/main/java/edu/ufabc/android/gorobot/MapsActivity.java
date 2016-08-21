@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,12 +19,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String TAG = "MAPS_ACTIVITY";
+    private static final String MyPREFERENCES = "MyPrefs" ;
+    private static final String LAT = "latKey";
+    private static final String LNG = "lngKey";
     private GoogleMap mMap;
     private LatLng currentLatLng;
     private Marker marker;
-    public static final String MyPREFERENCES = "MyPrefs" ;
-    public static final String LAT = "latKey";
-    public static final String LNG = "lngKey";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        Log.d(TAG, "OnCreate");
     }
 
     /**
@@ -95,32 +97,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void sendLatLng(View view){
+        String previousActivity = getCallingActivity().getClassName();
+        Intent output;
+        if(previousActivity.equals(MainActivity.class.getName())){
+            output = new Intent(this, MainActivity.class);
+        }
+        else {
+            output = new Intent(this, ListaActivity.class);
+        }
+
         if(marker != null) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("LATITUDE", currentLatLng.latitude);
-            intent.putExtra("LONGITUDE", currentLatLng.longitude);
-
-            //saveInSharedPreferences(String.valueOf(currentLatLng.latitude), String.valueOf(currentLatLng.longitude));
-
-            startActivity(intent);
-            finish();
+            output.putExtra("LATITUDE", String.valueOf(currentLatLng.latitude));
+            output.putExtra("LONGITUDE", String.valueOf(currentLatLng.longitude));
+            setResult(RESULT_OK, output);
+            MapsActivity.this.finish();
         }
         else {
             Toast.makeText(MapsActivity.this, "Selecione um local.", Toast.LENGTH_LONG).show();
         }
     }
 
-    /*
-    public void saveInSharedPreferences(String lat, String lng){
-        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor sharedPrefsEditor = sharedpreferences.edit();
-        int inputCount = sharedpreferences.getInt("inputCount", 0);
-
-        sharedPrefsEditor.putString(LAT+inputCount, lat);
-        sharedPrefsEditor.putString(LNG+inputCount, lng);
-        inputCount++;
-        sharedPrefsEditor.putInt("inputCount", inputCount);
-        sharedPrefsEditor.commit();
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "OnStart");
     }
-    */
+
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "OnResume");
+    }
+
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "OnPause");
+    }
+
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "OnStop");
+    }
+
+    public void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "OnRestart");
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "OnDestroy");
+    }
 }

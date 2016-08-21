@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 import java.util.Set;
 
 public class PairedDevices extends ListActivity {
+
+    private static final String TAG = "PAIRED_DEVICES_ACTIVITY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,8 @@ public class PairedDevices extends ListActivity {
                 adapter.add(device.getName() + "\n" + device.getAddress());
             }
         }
+
+        Log.d(TAG, "OnStart");
     }
 
     /*  Este método é executado quando o usuário seleciona um elemento da lista.
@@ -97,4 +102,34 @@ public class PairedDevices extends ListActivity {
 //
 //        return super.onOptionsItemSelected(item);
 //    }
+
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "OnStart");
+    }
+
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "OnResume");
+    }
+
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "OnPause");
+    }
+
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "OnStop");
+    }
+
+    public void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "OnRestart");
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "OnDestroy");
+    }
 }

@@ -2,7 +2,6 @@ package edu.ufabc.android.gorobot;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,9 +18,11 @@ import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static int ENABLE_BLUETOOTH = 1;
-    private static int SELECT_PAIRED_DEVICE = 2;
-    private static int SELECT_DISCOVERED_DEVICE = 3;
+    private static final int ENABLE_BLUETOOTH = 1;
+    private static final int SELECT_PAIRED_DEVICE = 2;
+    private static final int SELECT_DISCOVERED_DEVICE = 3;
+    private static final int GET_COORDINATES = 4;
+    private static final int GET_COORDINATES_FROM_LIST = 5;
     private static final String MyPREFERENCES = "MyPrefs" ;
     private static final String LAT = "latKey";
     private static final String LNG = "lngKey";
@@ -74,9 +75,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Log.d(TAG,"OnCreate");
-
     }
-
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -102,25 +101,38 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == ENABLE_BLUETOOTH) {
-            if(resultCode == RESULT_OK) {
-                statusMessage.setText("Bluetooth ativado");
-            }
-            else {
-                statusMessage.setText("Bluetooth não ativado");
-            }
-        }
-        else if(requestCode == SELECT_PAIRED_DEVICE || requestCode == SELECT_DISCOVERED_DEVICE) {
-            if(resultCode == RESULT_OK) {
-                statusMessage.setText("Você selecionou " + data.getStringExtra("btDevName") + "\n"
-                        + data.getStringExtra("btDevAddress"));
+        switch (requestCode){
+            case ENABLE_BLUETOOTH:
+                if(resultCode == RESULT_OK) {
+                    statusMessage.setText("Bluetooth ativado");
+                }
+                else {
+                    statusMessage.setText("Bluetooth não ativado");
+                }
+                break;
+            case SELECT_PAIRED_DEVICE:
+            case SELECT_DISCOVERED_DEVICE:
+                if(resultCode == RESULT_OK) {
+                    statusMessage.setText("Você selecionou " + data.getStringExtra("btDevName") + "\n"
+                            + data.getStringExtra("btDevAddress"));
 
-                connect = new ConnectionThread(data.getStringExtra("btDevAddress"));
-                connect.start();
-            }
-            else {
-                statusMessage.setText("Nenhum dispositivo selecionado");
-            }
+                    connect = new ConnectionThread(data.getStringExtra("btDevAddress"));
+                    connect.start();
+                }
+                else {
+                    statusMessage.setText("Nenhum dispositivo selecionado");
+                }
+                break;
+            case GET_COORDINATES_FROM_LIST:
+            case GET_COORDINATES:
+                if(resultCode == RESULT_OK){
+                    String latitude = data.getStringExtra("LATITUDE");
+                    String longitude = data.getStringExtra("LONGITUDE");
+                    EditText messageBox = (EditText) findViewById(R.id.editText_MessageBox);
+                    EditText messageBox2 = (EditText) findViewById(R.id.editText_MessageBox2);
+                    messageBox.setText(latitude);
+                    messageBox2.setText(longitude);
+                }
         }
     }
 
@@ -130,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void discoverDevices(View view) {
-
         Intent searchPairedDevicesIntent = new Intent(this, DiscoveredDevices.class);
         startActivityForResult(searchPairedDevicesIntent, SELECT_DISCOVERED_DEVICE);
     }
@@ -147,17 +158,13 @@ public class MainActivity extends AppCompatActivity {
 //        connect.start();
 //    }
 
-
-
-
     public void sendMessage(View view) {
-
         BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
         if (btAdapter != null) {
             if (btAdapter.isEnabled()) {
                 Set<BluetoothDevice> bondedDevices = btAdapter.getBondedDevices();
-                if (bondedDevices.size() > 0) {
 
+                if (bondedDevices.size() > 0) {
                     EditText messageBox = (EditText) findViewById(R.id.editText_MessageBox);
                     String messageBoxString = messageBox.getText().toString();
                     byte[] data = messageBoxString.getBytes();
@@ -177,16 +184,13 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }, 2000);
                 }
-                else{
+                else {
                     Log.e("error", "No appropriate paired devices.");
 
                 }
             }
         }
-
-        }
-    
-    
+    }
 
     public void saveInSharedPreferences(String lat, String lng){
         SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -197,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         sharedPrefsEditor.putString(LNG+inputCount, lng);
         inputCount++;
         sharedPrefsEditor.putInt("inputCount", inputCount);
-        sharedPrefsEditor.commit();
+        sharedPrefsEditor.apply();
     }
 
     //reset command to stop the robot
@@ -209,26 +213,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void openMap(View view){
         Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, GET_COORDINATES);
     }
 
     public void openListOfLastLocations(View view){
-        Intent intent = new Intent(MainActivity.this, ListActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent(MainActivity.this, ListaActivity.class);
+        startActivityForResult(intent, GET_COORDINATES_FROM_LIST);
     }
 
     public void onStart() {
         super.onStart();
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            Double latitude = extras.getDouble("LATITUDE");
-            Double longitude = extras.getDouble("LONGITUDE");
-            EditText messageBox = (EditText) findViewById(R.id.editText_MessageBox);
-            EditText messageBox2 = (EditText) findViewById(R.id.editText_MessageBox2);
-            messageBox.setText(latitude.toString());
-            messageBox2.setText(longitude.toString());
-
-        }
+        Log.d(TAG, "OnStart");
     }
 
     public void onResume() {
@@ -255,7 +250,4 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Log.d(TAG, "OnDestroy");
     }
-
-
-
 }

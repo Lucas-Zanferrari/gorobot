@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +24,7 @@ public class DiscoveredDevices extends ListActivity {
     /*  Um adaptador para conter os elementos da lista de dispositivos descobertos.
      */
     ArrayAdapter<String> arrayAdapter;
-
+    private static final String TAG = "DISCOVERED_DEV_ACTIVITY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,15 +58,14 @@ public class DiscoveredDevices extends ListActivity {
          */
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         setListAdapter(arrayAdapter);
-
-
+        Log.d(TAG, "OnCreate");
     }
+
 
     /*  Este método é executado quando o usuário seleciona um elemento da lista.
      */
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-
         /*  Extrai nome e endereço a partir do conteúdo do elemento selecionado.
             Nota: position-1 é utilizado pois adicionamos um título à lista e o
         valor de position recebido pelo método é deslocado em uma unidade.
@@ -92,31 +92,21 @@ public class DiscoveredDevices extends ListActivity {
         /*  Este método é executado sempre que um novo dispositivo for descoberto.
          */
         public void onReceive(Context context, Intent intent) {
-
-            /*  Obtem o Intent que gerou a ação.
-                Verifica se a ação corresponde à descoberta de um novo dispositivo.
-                Obtem um objeto que representa o dispositivo Bluetooth descoberto.
-                Exibe seu nome e endereço na lista.
-             */
-            String action = intent.getAction();
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                arrayAdapter.add(device.getName() + "\n" + device.getAddress());
-            }
+        /*  Obtem o Intent que gerou a ação.
+            Verifica se a ação corresponde à descoberta de um novo dispositivo.
+            Obtem um objeto que representa o dispositivo Bluetooth descoberto.
+            Exibe seu nome e endereço na lista.
+         */
+        String action = intent.getAction();
+        if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            arrayAdapter.add(device.getName() + "\n" + device.getAddress());
+        }
         }
     };
 
     /*  Executado quando a Activity é finalizada.
      */
-    @Override
-    protected void onDestroy() {
-
-        super.onDestroy();
-
-        /*  Remove o filtro de descoberta de dispositivos do registro.
-         */
-        unregisterReceiver(receiver);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -138,5 +128,39 @@ public class DiscoveredDevices extends ListActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "OnStart");
+    }
+
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "OnResume");
+    }
+
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "OnPause");
+    }
+
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "OnStop");
+    }
+
+    public void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "OnRestart");
+    }
+
+    protected void onDestroy() {
+        super.onDestroy();
+
+        /*  Remove o filtro de descoberta de dispositivos do registro.
+         */
+        unregisterReceiver(receiver);
+        Log.d(TAG, "OnDestroy");
     }
 }

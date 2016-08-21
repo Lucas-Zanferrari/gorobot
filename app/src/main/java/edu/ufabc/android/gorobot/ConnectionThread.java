@@ -7,7 +7,6 @@ import android.bluetooth.BluetoothSocket;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -29,7 +28,6 @@ public class ConnectionThread extends Thread{
     /*  Este construtor prepara o dispositivo para atuar como servidor.
      */
     public ConnectionThread() {
-
         this.server = true;
     }
 
@@ -38,7 +36,6 @@ public class ConnectionThread extends Thread{
     Bluetooth para o qual deve ser solicitada uma conexão.
      */
     public ConnectionThread(String btDevAddress) {
-
         this.server = false;
         this.btDevAddress = btDevAddress;
     }
@@ -47,7 +44,6 @@ public class ConnectionThread extends Thread{
     em uma nova thread.
      */
     public void run() {
-
         /*  Anuncia que a thread está sendo executada.
             Pega uma referência para o adaptador Bluetooth padrão.
          */
@@ -57,12 +53,11 @@ public class ConnectionThread extends Thread{
         /*  Determina que ações executar dependendo se a thread está configurada
         para atuar como servidor ou cliente.
          */
-        if(this.server) {
 
+        if(this.server) {
             /*  Servidor.
              */
             try {
-
                 /*  Cria um socket de servidor Bluetooth.
                     O socket servidor será usado apenas para iniciar a conexão.
                     Permanece em estado de espera até que algum cliente
@@ -75,12 +70,10 @@ public class ConnectionThread extends Thread{
                 servidor pode ser liberado.
                  */
                 if(btSocket != null) {
-
                     btServerSocket.close();
                 }
-
-            } catch (IOException e) {
-
+            }
+            catch (IOException e) {
                 /*  Caso ocorra alguma exceção, exibe o stack trace para debug.
                     Envia um código para a Activity principal, informando que
                 a conexão falhou.
@@ -88,14 +81,11 @@ public class ConnectionThread extends Thread{
                 e.printStackTrace();
                 toMainActivity("---N".getBytes());
             }
-
-
-        } else {
-
+        }
+        else {
             /*  Cliente.
              */
             try {
-
                 /*  Obtem uma representação do dispositivo Bluetooth com
                 endereço btDevAddress.
                     Cria um socket Bluetooth.
@@ -115,9 +105,8 @@ public class ConnectionThread extends Thread{
                  */
                 if (btSocket != null)
                     btSocket.connect();
-
-            } catch (IOException e) {
-
+            }
+            catch (IOException e) {
                 /*  Caso ocorra alguma exceção, exibe o stack trace para debug.
                     Envia um código para a Activity principal, informando que
                 a conexão falhou.
@@ -125,7 +114,6 @@ public class ConnectionThread extends Thread{
                 e.printStackTrace();
                 toMainActivity("---N".getBytes());
             }
-
         }
 
         /*  Pronto, estamos conectados! Agora, só precisamos gerenciar a conexão.
@@ -133,14 +121,12 @@ public class ConnectionThread extends Thread{
          */
 
         if(btSocket != null) {
-
             /*  Envia um código para a Activity principal informando que a
             a conexão ocorreu com sucesso.
              */
             toMainActivity("---S".getBytes());
 
             try {
-
                 /*  Obtem referências para os fluxos de entrada e saída do
                 socket Bluetooth.
                  */
@@ -164,14 +150,11 @@ public class ConnectionThread extends Thread{
                 a variável running assuma o valor false.
                  */
                 while(running) {
-
                     bytes = input.read(buffer);
                     toMainActivity(Arrays.copyOfRange(buffer, 0, bytes));
-
                 }
-
-            } catch (IOException e) {
-
+            }
+            catch (IOException e) {
                 /*  Caso ocorra alguma exceção, exibe o stack trace para debug.
                     Envia um código para a Activity principal, informando que
                 a conexão falhou.
@@ -180,7 +163,6 @@ public class ConnectionThread extends Thread{
                 toMainActivity("---N".getBytes());
             }
         }
-
     }
 
     /*  Utiliza um handler para enviar um byte array à Activity principal.
@@ -188,7 +170,6 @@ public class ConnectionThread extends Thread{
     antes de ser enviado.
      */
     private void toMainActivity(byte[] data) {
-
         Message message = new Message();
         Bundle bundle = new Bundle();
         bundle.putByteArray("data", data);
@@ -201,47 +182,32 @@ public class ConnectionThread extends Thread{
         A mensagem deve ser representada por um byte array.
      */
     public void write(final byte[] data) {
-
-
-
-
-
-
-
-            if (output != null) {
-
-                try {
-                /*  Transmite a mensagem.
-               */
-                    output.write(data);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-            } else {
-
-            /*  Envia à Activity principal um código de erro durante a conexão.
-             */
-                toMainActivity("---N".getBytes());
+        if (output != null) {
+            try {
+            /*  Transmite a mensagem. */
+                output.write(data);
             }
-
-
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+        /*  Envia à Activity principal um código de erro durante a conexão.
+         */
+            toMainActivity("---N".getBytes());
+        }
     }
 
 
     /*  Método utilizado pela Activity principal para encerrar a conexão
      */
      public void cancel() {
-
         try {
-
             running = false;
             btServerSocket.close();
             btSocket.close();
-
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
         running = false;

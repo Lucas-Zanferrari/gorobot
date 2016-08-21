@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,12 +14,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class ListActivity extends AppCompatActivity {
+public class ListaActivity extends AppCompatActivity {
 
     private static final String MyPREFERENCES = "MyPrefs" ;
     private static final String LAT = "latKey";
     private static final String LNG = "lngKey";
     private static final String TAG = "LIST_ACTIVITY";
+    private static final int GET_COORDINATES = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,28 +51,41 @@ public class ListActivity extends AppCompatActivity {
             // 3- a posicao clicada
             // 4- o id do objeto que foi clicado (geralmente segue o padrão da posicao)
             public void onItemClick(AdapterView<?> adaptador, View v, int pos, long id) {
-                Toast.makeText(ListActivity.this, "Lugar número "+pos, Toast.LENGTH_LONG).show();
+                Toast.makeText(ListaActivity.this, "Lugar número "+pos, Toast.LENGTH_LONG).show();
             }
         });
+
+        Log.d(TAG, "OnCreate");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == GET_COORDINATES && resultCode == RESULT_OK){
+            Intent output = new Intent(this, MainActivity.class);
+            String latitude = data.getStringExtra("LATITUDE");
+            String longitude = data.getStringExtra("LONGITUDE");
+            output.putExtra("LATITUDE", latitude);
+            output.putExtra("LONGITUDE", longitude);
+            setResult(RESULT_OK, output);
+            ListaActivity.this.finish();
+        }
     }
 
     public void openMap(View view){
-        Intent intent = new Intent(ListActivity.this, MapsActivity.class);
-        startActivity(intent);
-        ListActivity.this.finish();
+        Intent intent = new Intent(ListaActivity.this, MapsActivity.class);
+        startActivityForResult(intent, GET_COORDINATES);
     }
 
     public void openBluetoothConf(View view){
-        //Intent intent = new Intent(ListActivity.this, MainActivity.class);
-        //startActivity(intent);
-        ListActivity.this.finish();
+        setResult(RESULT_CANCELED);
+        ListaActivity.this.finish();
     }
 
     public void clearList(View view){
         SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedPrefsEditor = sharedpreferences.edit();
         sharedPrefsEditor.clear();
-        sharedPrefsEditor.commit();
+        sharedPrefsEditor.apply();
 
         ListView listLocais = (ListView) findViewById(R.id.listLocais);
         ArrayAdapter<String> adaptador = new ArrayAdapter<String>(this,
@@ -78,6 +93,36 @@ public class ListActivity extends AppCompatActivity {
                 new ArrayList<String>());
 
         listLocais.setAdapter(adaptador);
-        Toast.makeText(ListActivity.this, "Lista de locais apagada com sucesso.", Toast.LENGTH_LONG).show();
+        Toast.makeText(ListaActivity.this, "Lista de locais apagada com sucesso.", Toast.LENGTH_LONG).show();
+    }
+
+    public void onStart(){
+        super.onStart();
+        Log.d(TAG, "OnStart");
+    }
+
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "OnResume");
+    }
+
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "OnPause");
+    }
+
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "OnStop");
+    }
+
+    public void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "OnRestart");
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "OnDestroy");
     }
 }
