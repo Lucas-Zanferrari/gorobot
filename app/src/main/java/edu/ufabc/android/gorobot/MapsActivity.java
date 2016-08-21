@@ -102,8 +102,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             //saveInSharedPreferences(String.valueOf(currentLatLng.latitude), String.valueOf(currentLatLng.longitude));
 
-            //startActivity(intent);
-            MapsActivity.this.finish();
+            startActivity(intent);
+            finish();
         }
         else {
             Toast.makeText(MapsActivity.this, "Selecione um local.", Toast.LENGTH_LONG).show();

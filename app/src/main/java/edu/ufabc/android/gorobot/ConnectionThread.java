@@ -202,32 +202,38 @@ public class ConnectionThread extends Thread{
      */
     public void write(final byte[] data) {
 
-        if(output != null) {
-            try {
+
+
+
+
+
+
+            if (output != null) {
+
+                try {
                 /*  Transmite a mensagem.
                */
-                output.write(data);
+                    output.write(data);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
 
-
-        } else {
+            } else {
 
             /*  Envia à Activity principal um código de erro durante a conexão.
              */
-            toMainActivity("---N".getBytes());
-        }
+                toMainActivity("---N".getBytes());
+            }
+
 
     }
 
 
-
     /*  Método utilizado pela Activity principal para encerrar a conexão
      */
-    public void cancel() {
+     public void cancel() {
 
         try {
 

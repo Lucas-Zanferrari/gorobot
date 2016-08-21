@@ -1,6 +1,8 @@
 package edu.ufabc.android.gorobot;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
                 statusMessage.setText("Ocorreu um erro durante a conexão");
             else if(dataString.equals("---S"))
                 statusMessage.setText("Conectado");
+
+
             else {
                 textSpace.setText(new String(data));
             }
@@ -124,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void discoverDevices(View view) {
+
         Intent searchPairedDevicesIntent = new Intent(this, DiscoveredDevices.class);
         startActivityForResult(searchPairedDevicesIntent, SELECT_DISCOVERED_DEVICE);
     }
@@ -140,26 +147,46 @@ public class MainActivity extends AppCompatActivity {
 //        connect.start();
 //    }
 
+
+
+
     public void sendMessage(View view) {
-        EditText messageBox = (EditText) findViewById(R.id.editText_MessageBox);
-        String messageBoxString = messageBox.getText().toString();
-        byte[] data =  messageBoxString.getBytes();
-        EditText messageBox2 = (EditText) findViewById(R.id.editText_MessageBox2);
-        String messageBoxString2 = messageBox2.getText().toString();
-        final byte[] data2 =  messageBoxString2.getBytes();
 
-        saveInSharedPreferences(messageBoxString, messageBoxString2);
-        connect.write(data);
+        BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (btAdapter != null) {
+            if (btAdapter.isEnabled()) {
+                Set<BluetoothDevice> bondedDevices = btAdapter.getBondedDevices();
+                if (bondedDevices.size() > 0) {
 
-        //delay to make enough time to Arduino receive the strings
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                    connect.write(data2);
+                    EditText messageBox = (EditText) findViewById(R.id.editText_MessageBox);
+                    String messageBoxString = messageBox.getText().toString();
+                    byte[] data = messageBoxString.getBytes();
+                    EditText messageBox2 = (EditText) findViewById(R.id.editText_MessageBox2);
+                    String messageBoxString2 = messageBox2.getText().toString();
+                    final byte[] data2 = messageBoxString2.getBytes();
 
+                    saveInSharedPreferences(messageBoxString, messageBoxString2);
+                    connect.write(data);
+
+                    //delay to make enough time to Arduino receive the strings
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            connect.write(data2);
+
+                        }
+                    }, 2000);
+                }
+                else{
+                    Log.e("error", "No appropriate paired devices.");
+
+                }
             }
-        }, 2000);
-    }
+        }
+
+        }
+    
+    
 
     public void saveInSharedPreferences(String lat, String lng){
         SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -190,18 +217,18 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onStart(){
+    public void onStart() {
         super.onStart();
         Bundle extras = getIntent().getExtras();
-        if(extras != null) {
+        if (extras != null) {
             Double latitude = extras.getDouble("LATITUDE");
             Double longitude = extras.getDouble("LONGITUDE");
             EditText messageBox = (EditText) findViewById(R.id.editText_MessageBox);
             EditText messageBox2 = (EditText) findViewById(R.id.editText_MessageBox2);
             messageBox.setText(latitude.toString());
             messageBox2.setText(longitude.toString());
+
         }
-        Log.d(TAG, "OnStart");
     }
 
     public void onResume() {
