@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Set;
 
@@ -172,17 +173,24 @@ public class MainActivity extends AppCompatActivity {
                     String messageBoxString2 = messageBox2.getText().toString();
                     final byte[] data2 = messageBoxString2.getBytes();
 
-                    saveInSharedPreferences(messageBoxString, messageBoxString2);
-                    connect.write(data);
+                    try {
+                        connect.write(data);
 
-                    //delay to make enough time to Arduino receive the strings
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            connect.write(data2);
+                        //delay to make enough time to Arduino receive the strings
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                connect.write(data2);
 
-                        }
-                    }, 2000);
+                            }
+                        }, 2000);
+                        saveInSharedPreferences(messageBoxString, messageBoxString2);
+                    }
+                    catch (Exception e){
+                        Toast.makeText(MainActivity.this, "Erro: conecte o robô via bluetooth primeiro.",
+                                Toast.LENGTH_LONG).show();
+                        Log.d(TAG, e.getMessage());
+                    }
                 }
                 else {
                     Log.e("error", "No appropriate paired devices.");
