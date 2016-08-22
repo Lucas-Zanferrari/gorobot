@@ -160,12 +160,7 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
     public void sendMessage(View view) {
-        BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (btAdapter != null) {
-            if (btAdapter.isEnabled()) {
-                Set<BluetoothDevice> bondedDevices = btAdapter.getBondedDevices();
 
-                if (bondedDevices.size() > 0) {
                     EditText messageBox = (EditText) findViewById(R.id.editText_MessageBox);
                     String messageBoxString = messageBox.getText().toString();
                     byte[] data = messageBoxString.getBytes();
@@ -191,13 +186,7 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                         Log.d(TAG, e.getMessage());
                     }
-                }
-                else {
-                    Log.e("error", "No appropriate paired devices.");
 
-                }
-            }
-        }
     }
 
     public void saveInSharedPreferences(String lat, String lng){
@@ -214,9 +203,16 @@ public class MainActivity extends AppCompatActivity {
 
     //reset command to stop the robot
     public void reset(View view){
+        try {
         String resetCommand = "r";
         byte[] data =  resetCommand.getBytes();
         connect.write(data);
+        }
+        catch (Exception e){
+            Toast.makeText(MainActivity.this, "Erro: conecte o robô via bluetooth primeiro.",
+                    Toast.LENGTH_LONG).show();
+            Log.d(TAG, e.getMessage());
+        }
     }
 
     public void openMap(View view){

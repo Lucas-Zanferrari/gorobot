@@ -10,121 +10,114 @@
                 tools:context="edu.ufabc.android.gorobot.MainActivity">
 
     <TextView
-            android:id="@+id/statusMessage"
-            android:text="@string/app_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="31dp" />
+        android:textSize="20dp"
+        android:id="@+id/statusMessage"
+        android:text="@string/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
-            android:layout_width="150dp"
-            android:layout_height="80dp"
-            android:text="Dispositivos pareados"
-            android:id="@+id/button_PairedDevices"
-            android:layout_below="@+id/statusMessage"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="20dp"
-            android:onClick="searchPairedDevices" />
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:text="Dispositivos pareados"
+        android:id="@+id/button_PairedDevices"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:onClick="searchPairedDevices" />
 
     <Button
-            android:layout_width="150dp"
-            android:layout_height="80dp"
-            android:text="Descoberta de dispositivos"
-            android:id="@+id/button_DiscoveredDevices"
-            android:onClick="discoverDevices"
-
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:text="Descoberta de dispositivos"
+        android:id="@+id/button_DiscoveredDevices"
+        android:onClick="discoverDevices"
         android:layout_below="@+id/button_PairedDevices"
         android:layout_alignEnd="@+id/button_PairedDevices" />
 
-    <!--<Button-->
-            <!--android:layout_width="150dp"-->
-            <!--android:layout_height="80dp"-->
-            <!--android:text="Habilitar Visibilidade"-->
-            <!--android:id="@+id/button_Visibility"-->
-            <!--android:onClick="enableVisibility"-->
-            <!--android:layout_below="@+id/button_PairedDevices"-->
-            <!--android:layout_alignParentStart="true" />-->
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:text="Abrir mapa"
+        android:onClick="openMap"
+        android:id="@+id/button_Map"
+        android:layout_alignTop="@+id/button_PairedDevices"
+        android:layout_alignStart="@+id/button_Locations" />
 
     <Button
-            android:layout_width="150dp"
-            android:layout_height="80dp"
-            android:text="Abrir mapa"
-            android:onClick="openMap"
-            android:id="@+id/button_Map"
-        android:layout_above="@+id/button_DiscoveredDevices"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-            android:layout_width="150dp"
-            android:layout_height="80dp"
-            android:text="Últimos locais"
-            android:onClick="openListOfLastLocations"
-            android:id="@+id/button_Locations" android:layout_alignParentEnd="true"
-            android:layout_below="@id/button_Map" />
-
-
-    <!--<Button-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="Esperar\nconexão"-->
-    <!--android:id="@+id/button_WaitConnection"-->
-    <!--android:onClick="waitConnection"-->
-    <!--android:layout_below="@+id/button_PairedDevices"-->
-    <!--android:layout_alignParentStart="true"-->
-    <!--android:layout_toStartOf="@+id/button_Visibility"-->
-    <!--android:layout_alignEnd="@+id/button_PairedDevices" />-->
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:text="Últimos locais"
+        android:onClick="openListOfLastLocations"
+        android:id="@+id/button_Locations" android:layout_alignParentEnd="true"
+        android:layout_below="@id/button_Map" />
 
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Serial"
-            android:id="@+id/textSpace"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/button_Locations"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_above="@+id/editText_MessageBox"
-            android:layout_alignEnd="@+id/button_Locations" />
+        android:textSize="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Desconectado"
+        android:id="@+id/textSpace"
+        android:layout_below="@+id/textView4"
+        android:layout_alignParentEnd="true" />
 
     <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/editText_MessageBox"
-            android:layout_above="@+id/reset"
-            android:hint="Latitude"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="36dp"
-            android:layout_alignEnd="@+id/reset" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText_MessageBox"
+        android:hint="Latitude"
+        android:layout_above="@+id/editText_MessageBox2"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/editText_MessageBox2" />
 
     <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/editText_MessageBox2"
-            android:hint="Longitude"
-            android:layout_alignTop="@+id/editText_MessageBox"
-            android:layout_alignParentEnd="true"
-            android:layout_alignStart="@id/button_Locations" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText_MessageBox2"
+        android:hint="Longitude"
+        android:layout_above="@+id/button_Send"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/button_Send" />
 
     <Button
-            android:layout_width="150dp"
-            android:layout_height="80dp"
-            android:text="Recomeçar do zero"
-            android:id="@+id/reset"
-            android:onClick="reset"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true" />
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:text="Parar Robô"
+        android:id="@+id/reset"
+        android:onClick="reset"
+        android:layout_alignBottom="@+id/button_Send"
+        android:layout_alignParentEnd="true"
+        android:background="#ff0000" />
 
     <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="150dp"
-            android:layout_height="80dp"
-            android:text="Enviar robô"
-            android:id="@+id/button_Send"
-            android:onClick="sendMessage"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true" />
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:text="Enviar robô"
+        android:id="@+id/button_Send"
+        android:onClick="sendMessage"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="#00ff00" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Destino"
+        android:id="@+id/textView3"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/editText_MessageBox" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Status do Robô"
+        android:id="@+id/textView4"
+        android:layout_alignTop="@+id/editText_MessageBox"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

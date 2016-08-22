@@ -36,7 +36,8 @@
             android:id="@+id/button_BluetoothConf"
             android:onClick="openBluetoothConf"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true" />
+            android:layout_alignParentLeft="true"
+        android:layout_toStartOf="@+id/button_Delete" />
 
     <Button
             android:text="Abrir mapa"
@@ -45,7 +46,8 @@
             android:onClick="openMap"
             android:id="@+id/button_Map"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+        android:layout_toEndOf="@+id/button_Delete" />
 
     <Button
             android:text="Limpar lista"

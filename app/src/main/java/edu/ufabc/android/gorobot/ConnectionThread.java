@@ -150,8 +150,12 @@ public class ConnectionThread extends Thread{
                 a variável running assuma o valor false.
                  */
                 while(running) {
-                    bytes = input.read(buffer);
-                    toMainActivity(Arrays.copyOfRange(buffer, 0, bytes));
+
+                        bytes = input.read(buffer);
+                        //if (input.read(buffer) == '\0')
+                        toMainActivity(Arrays.copyOfRange(buffer, 0, bytes));
+
+
                 }
             }
             catch (IOException e) {
