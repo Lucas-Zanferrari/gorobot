@@ -30,10 +30,6 @@ public class DiscoveredDevices extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*  Esse trecho não é essencial, mas dá um melhor visual à lista.
-            Adiciona um título à lista de dispositivos pareados utilizando
-        o layout text_header.xml.
-        */
         ListView lv = getListView();
         LayoutInflater inflater = getLayoutInflater();
         View header = inflater.inflate(R.layout.text_header, lv, false);
@@ -128,31 +124,6 @@ public class DiscoveredDevices extends ListActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "OnStart");
-    }
-
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "OnResume");
-    }
-
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "OnPause");
-    }
-
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "OnStop");
-    }
-
-    public void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "OnRestart");
     }
 
     protected void onDestroy() {

@@ -155,7 +155,6 @@ public class ConnectionThread extends Thread{
                         //if (input.read(buffer) == '\0')
                         toMainActivity(Arrays.copyOfRange(buffer, 0, bytes));
 
-
                 }
             }
             catch (IOException e) {
@@ -201,7 +200,6 @@ public class ConnectionThread extends Thread{
             toMainActivity("---N".getBytes());
         }
     }
-
 
     /*  Método utilizado pela Activity principal para encerrar a conexão
      */

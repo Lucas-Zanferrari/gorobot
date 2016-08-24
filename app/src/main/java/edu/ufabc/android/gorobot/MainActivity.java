@@ -1,7 +1,6 @@
 package edu.ufabc.android.gorobot;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,15 +14,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Set;
-
 public class MainActivity extends AppCompatActivity {
+
 
     private static final int ENABLE_BLUETOOTH = 1;
     private static final int SELECT_PAIRED_DEVICE = 2;
     private static final int SELECT_DISCOVERED_DEVICE = 3;
     private static final int GET_COORDINATES = 4;
     private static final int GET_COORDINATES_FROM_LIST = 5;
+    private static final int STATUS_ACTIVITY = 6;
     private static final String MyPREFERENCES = "MyPrefs" ;
     private static final String LAT = "latKey";
     private static final String LNG = "lngKey";
@@ -46,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
 
             else {
+
+
+
                 textSpace.setText(new String(data));
             }
         }
@@ -55,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         statusMessage = (TextView) findViewById(R.id.statusMessage);
         textSpace = (TextView) findViewById(R.id.textSpace);
 
@@ -77,28 +78,6 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG,"OnCreate");
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -143,21 +122,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void discoverDevices(View view) {
-        Intent searchPairedDevicesIntent = new Intent(this, DiscoveredDevices.class);
-        startActivityForResult(searchPairedDevicesIntent, SELECT_DISCOVERED_DEVICE);
+        Intent discoverDevicesIntent = new Intent(this, DiscoveredDevices.class);
+        startActivityForResult(discoverDevicesIntent, SELECT_DISCOVERED_DEVICE);
     }
-
-//    public void enableVisibility(View view) {
-//        Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-//        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 30);
-//        startActivity(discoverableIntent);
-//    }
-
-//    public void waitConnection(View view) {
-//
-//        connect = new ConnectionThread();
-//        connect.start();
-//    }
 
     public void sendMessage(View view) {
 
@@ -168,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                     String messageBoxString2 = messageBox2.getText().toString();
                     final byte[] data2 = messageBoxString2.getBytes();
 
+
                     try {
                         connect.write(data);
 
@@ -176,17 +144,18 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 connect.write(data2);
-
                             }
                         }, 2000);
                         saveInSharedPreferences(messageBoxString, messageBoxString2);
+
+
+
                     }
                     catch (Exception e){
                         Toast.makeText(MainActivity.this, "Erro: conecte o robô via bluetooth primeiro.",
                                 Toast.LENGTH_LONG).show();
                         Log.d(TAG, e.getMessage());
                     }
-
     }
 
     public void saveInSharedPreferences(String lat, String lng){
@@ -223,35 +192,5 @@ public class MainActivity extends AppCompatActivity {
     public void openListOfLastLocations(View view){
         Intent intent = new Intent(MainActivity.this, ListaActivity.class);
         startActivityForResult(intent, GET_COORDINATES_FROM_LIST);
-    }
-
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "OnStart");
-    }
-
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "OnResume");
-    }
-
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "OnPause");
-    }
-
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "OnStop");
-    }
-
-    public void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "OnRestart");
-    }
-
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "OnDestroy");
     }
 }

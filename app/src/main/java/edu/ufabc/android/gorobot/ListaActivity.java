@@ -95,34 +95,4 @@ public class ListaActivity extends AppCompatActivity {
         listLocais.setAdapter(adaptador);
         Toast.makeText(ListaActivity.this, "Lista de locais apagada com sucesso.", Toast.LENGTH_LONG).show();
     }
-
-    public void onStart(){
-        super.onStart();
-        Log.d(TAG, "OnStart");
-    }
-
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "OnResume");
-    }
-
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "OnPause");
-    }
-
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "OnStop");
-    }
-
-    public void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "OnRestart");
-    }
-
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "OnDestroy");
-    }
 }
